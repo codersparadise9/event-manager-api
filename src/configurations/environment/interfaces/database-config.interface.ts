@@ -1,15 +1,18 @@
 /**
+ Free and Open Source - GNU LGPLv3
+ Copyright © 2024
+ @Author anup.tiwari787@gmail.com
+ */
+
+/**
  * interface to describe database configuration object
  */
-import { DatabaseType } from 'typeorm';
 
 export interface DatabaseConfig {
-  type: DatabaseType;
   host: string | 'localhost';
   port: number;
   username: string;
   password: string;
-  database: string;
-  entities: any[];
+  databaseName: string;
   synchronize: boolean;
 }
