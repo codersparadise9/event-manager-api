@@ -5,15 +5,14 @@
  */
 
 import { User } from './user-entity';
+import { BaseEntity } from './base.entity';
 
-export interface Event {
-  id: string;
+export interface Event extends BaseEntity {
   name: string;
   location: string;
   start: Date;
   end: Date;
   description: string;
   owner: User;
-  participants: User[];
   active: boolean;
 }

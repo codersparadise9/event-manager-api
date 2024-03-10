@@ -4,41 +4,56 @@
  @Author anup.tiwari787@gmail.com
  */
 
-import { IsBoolean, IsNumber, IsString, validateSync } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString, validateSync } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
 export class EnvConfigVariables {
   @IsString()
+  @IsNotEmpty()
   DATABASE_USERNAME: string;
 
   @IsString()
+  @IsNotEmpty()
   DATABASE_PASSWORD: string;
 
   @IsString()
+  @IsNotEmpty()
   DATABASE_NAME: string;
 
   @IsString()
+  @IsNotEmpty()
   DATABASE_HOST: string;
 
   @IsBoolean()
+  @IsNotEmpty()
   DATABASE_SYNCHRONIZE: boolean;
 
   @IsNumber()
+  @IsNotEmpty()
   DATABASE_PORT: number;
 
   @IsString()
-  JWT_KEY: string;
+  @IsNotEmpty()
+  JWT_ACCESS_SECRET: string;
 
   @IsString()
-  JWT_SECRET: string;
+  @IsNotEmpty()
+  JWT_REFRESH_SECRET: string;
 
   @IsString()
+  @IsNotEmpty()
+  JWT_EMAIL_VERIFICATION_SECRET: string;
+
+  @IsString()
+  @IsNotEmpty()
   GOOGLE_CLIENT_ID: string;
 
   @IsString()
+  @IsNotEmpty()
   GOOGLE_CLIENT_SECRET: string;
 
   @IsString()
+  @IsNotEmpty()
   GOOGLE_CALLBACK_URI: string;
 }
 

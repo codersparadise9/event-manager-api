@@ -4,12 +4,13 @@
  @Author anup.tiwari787@gmail.com
  */
 
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvConfigModule } from '../environment/env.module';
 import { EnvConfigService } from '../environment/env-config.service';
 import { typeormDatabaseConfig } from './database-config';
 
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({

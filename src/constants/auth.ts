@@ -5,7 +5,7 @@
  */
 
 export enum Auth_Types {
-  LOCAl = 'local',
+  LOCAL = 'local',
   GOOGLE = 'google',
 }
 

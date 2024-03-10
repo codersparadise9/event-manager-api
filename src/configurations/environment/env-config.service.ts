@@ -31,8 +31,9 @@ export class EnvConfigService {
         clientSecret: this._configService.get('GOOGLE_CLIENT_SECRET'),
         callbackURI: this._configService.get('GOOGLE_CALLBACK_URI'),
       },
-      jwtKey: this._configService.get('JWT_KEY'),
-      jwtSecret: this._configService.get('JWT_SECRET'),
+      jwtAccessSecret: this._configService.get('JWT_ACCESS_SECRET'),
+      jwtRefreshSecret: this._configService.get('JWT_REFRESH_SECRET'),
+      jwtEmailVerifySecret: this._configService.get('JWT_EMAIL_VERIFICATION_SECRET'),
     };
   }
 }

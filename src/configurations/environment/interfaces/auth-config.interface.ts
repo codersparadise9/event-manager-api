@@ -14,7 +14,8 @@ export interface OAuth2Config {
  * Add other providers config here extending it from Oauth2Config , if needed for extra config create another interface and extend this OAuth2Config
  */
 export interface AuthConfig {
-  jwtKey: string;
-  jwtSecret: string;
+  jwtAccessSecret: string;
+  jwtRefreshSecret: string;
+  jwtEmailVerifySecret: string;
   googleOAuth2: OAuth2Config;
 }

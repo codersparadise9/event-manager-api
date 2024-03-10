@@ -4,10 +4,10 @@
  @Author anup.tiwari787@gmail.com
  */
 
-import { AuthResponseDTO, JWTUser } from '../dtos/auth-dto';
+import { AuthResponseDTO, JWTUser } from '../../dtos/auth-dto';
 
-export abstract class JwtService {
-  abstract signToken(payload: JWTUser, key: string): Promise<AuthResponseDTO>;
+export abstract class JwtServiceCore {
+  abstract signToken(payload: JWTUser, key: string, exp: string): Promise<string>;
 
   abstract refreshAccessToken(refreshToken: string): Promise<AuthResponseDTO>;
 
