@@ -11,8 +11,10 @@ import { SubscriptionService } from '../../core/services/subscription.service';
 import { SubscriptionServiceV1 } from './services/subscription-service-v1';
 import { SubscriptionRepository } from '../../core/repositories/subscription-repository';
 import { TypeormSubscriptionRepository } from './repositories/typeorm-subscription.entity';
+import { SubscriptionController } from './controllers/subscription.controller';
 
 @Module({
+  controllers: [SubscriptionController],
   imports: [TypeOrmModule.forFeature([TypeormSubscriptionEntity])],
   providers: [
     {

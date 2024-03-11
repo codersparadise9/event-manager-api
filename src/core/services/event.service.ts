@@ -21,4 +21,6 @@ export abstract class EventService {
   abstract getAllActiveEvents(userID: string): Promise<Event[]>;
 
   abstract getEventByFilter(filter: any, user?: JWTUser): Promise<Event | Event[]>;
+
+  abstract getEventByID(id: string): Promise<Event>;
 }

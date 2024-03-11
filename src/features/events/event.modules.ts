@@ -13,10 +13,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventServiceV1 } from './services/event-service-v1';
 import { TypeormEventRepository } from './repositories/typeorm-event.repository';
 import { UsersModule } from '../users/users.module';
+import { SubscriptionModule } from '../subscriptions/subscription.module';
 
 @Module({
   controllers: [EventsControllerV1],
-  imports: [TypeOrmModule.forFeature([TypeormEventEntity]), UsersModule],
+  imports: [TypeOrmModule.forFeature([TypeormEventEntity]), UsersModule, SubscriptionModule],
   providers: [
     {
       provide: EventService,

@@ -54,11 +54,7 @@ export class TypeormSubscriptionRepository implements SubscriptionRepository<Typ
     return await this._paginationService.paginate(this._repository, options, page, limit);
   }
 
-  async findByFilter(
-    filter: Partial<TypeormSubscriptionEntity>,
-    page: number,
-    limit: number,
-  ): Promise<PaginatedResponse<TypeormSubscriptionEntity>> {
+  async findByFilter(filter: Partial<TypeormSubscriptionEntity>, page: number, limit: number): Promise<PaginatedResponse<TypeormSubscriptionEntity>> {
     const options = {
       where: filter,
       skip: (page - 1) * limit,
@@ -71,9 +67,7 @@ export class TypeormSubscriptionRepository implements SubscriptionRepository<Typ
     return await this._repository.findOne(id);
   }
 
-  async update(
-    entity: TypeormSubscriptionEntity[] | TypeormSubscriptionEntity,
-  ): Promise<TypeormSubscriptionEntity[] | TypeormSubscriptionEntity> {
+  async update(entity: TypeormSubscriptionEntity[] | TypeormSubscriptionEntity): Promise<TypeormSubscriptionEntity[] | TypeormSubscriptionEntity> {
     return await this._transactionManager.update(entity);
   }
 }

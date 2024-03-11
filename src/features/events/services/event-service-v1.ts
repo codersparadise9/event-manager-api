@@ -85,4 +85,8 @@ export class EventServiceV1 implements EventService {
       };
     return await this._repository.findBy(findOption);
   }
+
+  async getEventByID(id: string): Promise<Event> {
+    return await this._repository.findByID(id);
+  }
 }

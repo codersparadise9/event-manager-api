@@ -10,6 +10,8 @@ import { User } from '../../../core/entities/user-entity';
 import { Event } from '../../../core/entities/event-entity';
 import { SubscriptionRepository } from '../../../core/repositories/subscription-repository';
 import { Subscription } from '../../../core/entities/subscription';
+import { JWTUser } from '../../../core/dtos/auth-dto';
+import { FindOptionsWhere } from 'typeorm';
 
 @Injectable()
 export class SubscriptionServiceV1 implements SubscriptionService {
@@ -25,5 +27,17 @@ export class SubscriptionServiceV1 implements SubscriptionService {
       await this._repository.delete(subscription[0].id);
       return subscription[0];
     }
+  }
+
+  async findByFilter(filter: any, user?: JWTUser): Promise<Subscription | Subscription[]> {
+    let findOptions: FindOptionsWhere<Subscription>;
+    if (user) {
+      findOptions = {
+        user: {
+          id: user.id,
+        },
+      };
+    }
+    return await this._repository.findBy(findOptions);
   }
 }

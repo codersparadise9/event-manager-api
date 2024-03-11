@@ -40,9 +40,7 @@ export class TypeormEventRepository implements EventRepository {
     if (id === null || id === undefined || !validate(id)) {
       throw new BadRequestException('id is not valid');
     }
-    const event = isArray(id)
-      ? await Promise.all(id.map(async (id) => await this._repository.findOne(id)))
-      : await this._repository.findOne(id);
+    const event = isArray(id) ? await Promise.all(id.map(async (id) => await this._repository.findOne(id))) : await this._repository.findOne(id);
     return await this._transactionManager.delete(event);
   }
 
@@ -54,11 +52,7 @@ export class TypeormEventRepository implements EventRepository {
     return await this._paginationService.paginate(this._repository, options, page, limit);
   }
 
-  async findByFilter(
-    filter: Partial<TypeormEventEntity>,
-    page: number,
-    limit: number,
-  ): Promise<PaginatedResponse<TypeormEventEntity>> {
+  async findByFilter(filter: Partial<TypeormEventEntity>, page: number, limit: number): Promise<PaginatedResponse<TypeormEventEntity>> {
     const options = {
       where: filter,
       skip: (page - 1) * limit,
@@ -71,7 +65,7 @@ export class TypeormEventRepository implements EventRepository {
     if (id === null || id === undefined || !validate(id)) {
       throw new BadRequestException('id is not valid');
     }
-    return await this._repository.findOne(id);
+    return await this._repository.findOne({ where: { id }, relations: ['owner'] });
   }
 
   async update(updateEntity: TypeormEventEntity | TypeormEventEntity[]): Promise<TypeormEventEntity | TypeormEventEntity[]> {
