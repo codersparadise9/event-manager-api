@@ -9,5 +9,6 @@ export const generateFakeUser = (): User => {
     email: faker.internet.email(),
     authType: Auth_Types.LOCAL,
     password: faker.internet.password(),
+    subscription: [],
   };
 };

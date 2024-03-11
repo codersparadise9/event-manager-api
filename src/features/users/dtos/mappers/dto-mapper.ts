@@ -15,6 +15,7 @@ export class UserDTOMapper {
       email: createDTO.email,
       fullName: createDTO.fullName,
       password: createDTO.password,
+      subscription: [],
     };
   }
 }

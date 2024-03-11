@@ -6,22 +6,29 @@
 
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventService } from '../../../core/services/event.service';
-import { CreateEventDTO } from '../../../core/dtos/event-dto';
+import { CreateEventDTOCore } from '../../../core/dtos/event-dto';
 import { Event } from '../../../core/entities/event-entity';
 import { EventRepository } from '../../../core/repositories/event-repository';
 import { EventDtoEntityMapper } from '../mapper/event-dto-entity.mapper';
 import { FindOptionsWhere } from 'typeorm';
 import { User } from '../../../core/entities/user-entity';
+import { TypeormEventEntity } from '../entities/typeorm-event.entity';
+import { GetUser } from '../../../common/auth/decorators/auth-decorator';
+import { JWTUser } from '../../../core/dtos/auth-dto';
+import { validate } from 'uuid';
 
 @Injectable()
 export class EventServiceV1 implements EventService {
-  constructor(private readonly _repository: EventRepository<Event>) {}
+  constructor(private readonly _repository: EventRepository) {}
 
-  async createEvent(user: User, createEventDTO: CreateEventDTO): Promise<Event | Event[]> {
+  async createEvent(user: User, createEventDTO: CreateEventDTOCore): Promise<Event | Event[]> {
     return await this._repository.create(EventDtoEntityMapper.mapCreateDTO(user, createEventDTO));
   }
 
   async deleteEvent(eventID: string): Promise<Event | Event[]> {
+    if (eventID === null || eventID === undefined || !validate(eventID)) {
+      throw new BadRequestException('id is not valid');
+    }
     return await this._repository.delete(eventID);
   }
 
@@ -44,12 +51,39 @@ export class EventServiceV1 implements EventService {
     return await this._repository.findBy(options);
   }
 
-  async updateEvent(eventID: string, updateEventDTO: Partial<CreateEventDTO>): Promise<Event | Event[]> {
-    const event = await this._repository.findByID(eventID);
+  async updateEvent(userID: string, eventID: string, updateEventDTO: Partial<CreateEventDTOCore>): Promise<Event | Event[]> {
+    if (eventID === null || eventID === undefined || !validate(eventID)) {
+      throw new BadRequestException('id is not valid');
+    }
+    const event = await this._repository.findBy({
+      owner: {
+        id: userID,
+      },
+      id: eventID,
+    });
     if (!event) {
       throw new BadRequestException('event not found ');
+    } else {
+      const updatedEvent = { ...event, ...updateEventDTO };
+      console.log('updatedEvent', updatedEvent);
+      return await this._repository.update(updatedEvent);
     }
-    const updatedEvent = { ...event, ...updateEventDTO };
-    return await this._repository.update(updatedEvent);
+  }
+
+  async getEventByFilter(filter: Partial<Event>, @GetUser() jwtUser?: JWTUser): Promise<Event | Event[]> {
+    let findOption: FindOptionsWhere<TypeormEventEntity>;
+
+    if (jwtUser) {
+      findOption = {
+        owner: {
+          id: jwtUser.id,
+        },
+        ...filter,
+      };
+    } else
+      findOption = {
+        ...filter,
+      };
+    return await this._repository.findBy(findOption);
   }
 }

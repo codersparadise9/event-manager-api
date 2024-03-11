@@ -9,6 +9,8 @@ import { Event } from '../../../core/entities/event-entity';
 import { TypeormBaseEntity } from '../../../common/entities/typeorm-base.entity';
 import { TypeormUserEntity } from '../../users/entities/typeorm-user.entity';
 import { TypeormSubscriptionEntity } from '../../subscriptions/entities/typeorm-subscription.entity';
+import { User } from '../../../core/entities/user-entity';
+import { Subscription } from '../../../core/entities/subscription';
 
 @Entity('event')
 export class TypeormEventEntity extends TypeormBaseEntity implements Event {
@@ -22,7 +24,7 @@ export class TypeormEventEntity extends TypeormBaseEntity implements Event {
   description: string;
 
   @ManyToOne(() => TypeormUserEntity)
-  owner: TypeormUserEntity;
+  owner: User;
 
   @Column({ type: 'text' })
   location: string;
@@ -37,5 +39,5 @@ export class TypeormEventEntity extends TypeormBaseEntity implements Event {
   active: boolean;
 
   @OneToMany(() => TypeormSubscriptionEntity, (subscription) => subscription.event)
-  subscriptions: TypeormSubscriptionEntity[];
+  subscription: Subscription[];
 }

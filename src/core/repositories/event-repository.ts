@@ -5,7 +5,8 @@
  */
 
 import { GenericRepositoryCore } from './generic-repository.core';
+import { Event } from '../entities/event-entity';
 
-export abstract class EventRepository<T> extends GenericRepositoryCore<T> {
-  abstract findBy(filter: any): Promise<T[]>;
+export abstract class EventRepository extends GenericRepositoryCore<Event> {
+  abstract findBy(filter: any): Promise<Event[]>;
 }

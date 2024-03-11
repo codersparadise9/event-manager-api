@@ -4,7 +4,7 @@
  @Author anup.tiwari787@gmail.com
  */
 
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventRepository } from '../../../core/repositories/event-repository';
 import { TypeormEventEntity } from '../entities/typeorm-event.entity';
 import { PaginatedResponse } from '../../../core/dtos/paginated-response-dto';
@@ -14,11 +14,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionManagerCore } from '../../../core/services/common/transaction-manager.core';
 import { PaginationServiceCore } from '../../../core/services/common/pagination.service.core';
 import { isArray } from 'class-validator';
+import { validate } from 'uuid';
 
 @Injectable()
-export class TypeormEventRepository implements EventRepository<TypeormEventEntity> {
+export class TypeormEventRepository implements EventRepository {
   constructor(
-    @InjectRepository(EventRepository) private readonly _repository: Repository<TypeormEventEntity>,
+    @InjectRepository(TypeormEventEntity) private readonly _repository: Repository<TypeormEventEntity>,
     private readonly _transactionManager: TransactionManagerCore<TypeormEventEntity>,
     private readonly _paginationService: PaginationServiceCore<TypeormEventEntity>,
   ) {}
@@ -36,6 +37,9 @@ export class TypeormEventRepository implements EventRepository<TypeormEventEntit
   }
 
   async delete(id: any): Promise<TypeormEventEntity[] | TypeormEventEntity> {
+    if (id === null || id === undefined || !validate(id)) {
+      throw new BadRequestException('id is not valid');
+    }
     const event = isArray(id)
       ? await Promise.all(id.map(async (id) => await this._repository.findOne(id)))
       : await this._repository.findOne(id);
@@ -64,6 +68,9 @@ export class TypeormEventRepository implements EventRepository<TypeormEventEntit
   }
 
   async findByID(id: any): Promise<TypeormEventEntity> {
+    if (id === null || id === undefined || !validate(id)) {
+      throw new BadRequestException('id is not valid');
+    }
     return await this._repository.findOne(id);
   }
 

@@ -10,6 +10,7 @@ import { LocalAuthLoginDTO, LocalAuthSignupDTO } from '../../../core/dtos/auth-d
 import { Response } from 'express';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { Auth_Types } from '../../../constants/auth';
+import { generateFakeEvent } from '../../../_faker/event.faker';
 
 @Controller('auth')
 export class AuthControllerV1 {
@@ -18,6 +19,7 @@ export class AuthControllerV1 {
   @Post('/login')
   @UseGuards(LocalAuthGuard)
   async login(@Body() loginDTO: LocalAuthLoginDTO, @Res() response: Response) {
+    console.log(generateFakeEvent());
     const tokens = await this.authService.login(loginDTO);
     response.set('Authorization', tokens.accessToken).set('x-refresh-token', tokens.refreshToken).send();
   }

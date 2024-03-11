@@ -6,10 +6,12 @@
 
 import { Auth_Types } from '../../constants/auth';
 import { BaseEntity } from './base.entity';
+import { Subscription } from './subscription';
 
 export interface User extends BaseEntity {
   email: string;
   password: string;
   fullName: string;
   authType: Auth_Types;
+  subscription: Subscription[];
 }

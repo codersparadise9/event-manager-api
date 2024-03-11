@@ -6,6 +6,7 @@
 
 import { User } from './user-entity';
 import { BaseEntity } from './base.entity';
+import { Subscription } from './subscription';
 
 export interface Event extends BaseEntity {
   name: string;
@@ -15,4 +16,5 @@ export interface Event extends BaseEntity {
   description: string;
   owner: User;
   active: boolean;
+  subscription: Subscription[];
 }

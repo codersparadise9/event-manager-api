@@ -6,11 +6,11 @@
 
 import { Module } from '@nestjs/common';
 import { ConfigurationModule } from './configurations/configuration.module';
-import { UsersModule } from './features/users/users.module';
 import { CommonModule } from './common/common-module';
+import { FeatureModule } from './features/feature.module';
 
 @Module({
-  imports: [ConfigurationModule, CommonModule, UsersModule],
+  imports: [ConfigurationModule, CommonModule, FeatureModule],
   controllers: [],
   providers: [],
 })

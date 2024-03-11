@@ -10,6 +10,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { TypeormBaseEntity } from '../../../common/entities/typeorm-base.entity';
 import { Exclude } from 'class-transformer';
 import { TypeormSubscriptionEntity } from '../../subscriptions/entities/typeorm-subscription.entity';
+import { Subscription } from '../../../core/entities/subscription';
 
 @Entity('user')
 export class TypeormUserEntity extends TypeormBaseEntity implements User {
@@ -27,5 +28,5 @@ export class TypeormUserEntity extends TypeormBaseEntity implements User {
   password: string;
 
   @OneToMany(() => TypeormSubscriptionEntity, (subscription) => subscription.user)
-  subscription: TypeormSubscriptionEntity[];
+  subscription: Subscription[];
 }
