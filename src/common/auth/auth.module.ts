@@ -14,16 +14,12 @@ import { AuthControllerV1 } from './controller/auth.controller-v1';
 import { UsersModule } from '../../features/users/users.module';
 import { JwtServiceModule } from '../jwt/jwt.module';
 import { RefreshKeyStrategy } from './strategies/refresh-auth.strategy';
-import { IsEmailRegistered } from './dtos/validators/email-already-registered.validator';
-import { IsEmailNotRegistered } from './dtos/validators/email-registered.validator';
-import { IsUserVerified } from './dtos/validators/user-activated.validator';
+import { UserVerifiedValidator } from './dtos/validators/user-activated.validator';
+import { EmailRegisteredValidator } from './dtos/validators/email-registered.validator';
+import { EmailNotFoundValidation } from './dtos/validators/email-not-found.validator';
 
 @Module({
-  imports: [
-    PassportModule.register({ defaultStrategy: ['local-auth-strategy', 'jwt-auth-strategy'] }),
-    UsersModule,
-    JwtServiceModule,
-  ],
+  imports: [PassportModule.register({ defaultStrategy: ['local-auth-strategy', 'jwt-auth-strategy'] }), UsersModule, JwtServiceModule],
   providers: [
     LocalStrategy,
     AccessKeyStrategy,
@@ -32,9 +28,9 @@ import { IsUserVerified } from './dtos/validators/user-activated.validator';
       provide: AuthServiceCore,
       useClass: AuthServiceV1,
     },
-    IsEmailRegistered,
-    IsEmailNotRegistered,
-    IsUserVerified,
+    EmailRegisteredValidator,
+    EmailNotFoundValidation,
+    UserVerifiedValidator,
   ],
   controllers: [AuthControllerV1],
 })

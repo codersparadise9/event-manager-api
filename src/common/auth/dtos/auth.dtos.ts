@@ -5,16 +5,15 @@
  */
 
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
-import { EmailNotRegistered } from './validators/email-registered.validator';
-import { UserVerified } from './validators/user-activated.validator';
-import { EmailRegistered } from './validators/email-already-registered.validator';
 import { PasswordStrength } from './validators/password-validator';
+import { IsEmailNotFound } from './validators/email-not-found.validator';
+import { IsEmailRegistered } from './validators/email-registered.validator';
 
 export class LoginDTO {
   @IsEmail()
   @IsNotEmpty()
-  @EmailNotRegistered({ message: 'user not registered' })
-  @UserVerified({ message: 'please verify email and sign in again' })
+  @IsEmailNotFound({ message: 'email not registered' })
+  //@IsUserVerified({ message: 'please verify email and sign in again' })
   email: string;
 
   @IsString()
@@ -25,7 +24,7 @@ export class LoginDTO {
 export class SignUpUserDTO {
   @IsEmail()
   @IsNotEmpty()
-  @EmailRegistered({ message: 'email already registered' })
+  @IsEmailRegistered({ message: 'email already registered' })
   email: string;
 
   @IsString()

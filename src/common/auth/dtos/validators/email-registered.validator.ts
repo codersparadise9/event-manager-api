@@ -4,34 +4,27 @@
  @Author anup.tiwari787@gmail.com
  */
 
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-} from 'class-validator';
-import { IsEmailRegistered } from './email-already-registered.validator';
+import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 import { UserService } from '../../../../core/services/user.service';
 
 @ValidatorConstraint({ async: true })
-export class IsEmailNotRegistered implements ValidatorConstraintInterface {
+export class EmailRegisteredValidator implements ValidatorConstraintInterface {
   constructor(private readonly _userService: UserService) {}
 
   async validate(email: any) {
     const user = await this._userService.findByEmail(email);
-    console.log(user);
-    return user !== undefined;
+    return !user;
   }
 }
 
-export function EmailNotRegistered(validationOptions?: ValidationOptions) {
+export function IsEmailRegistered(validationOptions?: ValidationOptions) {
   return function (object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       constraints: [],
-      validator: IsEmailRegistered,
+      validator: EmailRegisteredValidator,
     });
   };
 }

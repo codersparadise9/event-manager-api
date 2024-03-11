@@ -4,16 +4,7 @@
  @Author anup.tiwari787@gmail.com
  */
 
-import {
-  Body,
-  ClassSerializerInterceptor,
-  Controller,
-  Get,
-  Post,
-  Res,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Post, Res, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthServiceCore } from '../../../core/services/common/auth-service.core';
 import { JWTUser } from '../../../core/dtos/auth-dto';
 import { Response } from 'express';

@@ -4,16 +4,11 @@
  @Author anup.tiwari787@gmail.com
  */
 
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-} from 'class-validator';
+import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 import { UserService } from '../../../../core/services/user.service';
 
 @ValidatorConstraint({ async: true })
-export class IsEmailRegistered implements ValidatorConstraintInterface {
+export class EmailNotFoundValidation implements ValidatorConstraintInterface {
   constructor(private readonly _userService: UserService) {}
 
   async validate(email: any) {
@@ -22,14 +17,14 @@ export class IsEmailRegistered implements ValidatorConstraintInterface {
   }
 }
 
-export function EmailRegistered(validationOptions?: ValidationOptions) {
+export function IsEmailNotFound(validationOptions?: ValidationOptions) {
   return function (object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       constraints: [],
-      validator: IsEmailRegistered,
+      validator: EmailNotFoundValidation,
     });
   };
 }
