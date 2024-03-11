@@ -74,8 +74,8 @@ export class TypeormEventRepository implements EventRepository {
     return await this._repository.findOne(id);
   }
 
-  async update(entity: TypeormEventEntity[] | TypeormEventEntity): Promise<TypeormEventEntity | TypeormEventEntity[]> {
-    return await this._transactionManager.update(entity);
+  async update(updateEntity: TypeormEventEntity | TypeormEventEntity[]): Promise<TypeormEventEntity | TypeormEventEntity[]> {
+    return await this._transactionManager.update(updateEntity);
   }
 
   async findBy(filter: FindOptionsWhere<TypeormEventEntity>): Promise<TypeormEventEntity[]> {

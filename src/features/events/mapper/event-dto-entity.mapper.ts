@@ -1,3 +1,9 @@
+/**
+ Free and Open Source - GNU LGPLv3
+ Copyright © 2024
+ @Author anup.tiwari787@gmail.com
+ */
+
 import { Event } from '../../../core/entities/event-entity';
 import { User } from '../../../core/entities/user-entity';
 import { CreateEventDTO } from '../dtos/event-dtos';
@@ -14,5 +20,12 @@ export class EventDtoEntityMapper {
       start: createDTO.start,
       subscription: [],
     };
+  }
+
+  static mapUpdateDTO(entity: Event | Event[], updateEntity: Partial<Event>): Event | Event[] {
+    for (const property in updateEntity) {
+      entity[property] = updateEntity[property];
+    }
+    return entity;
   }
 }

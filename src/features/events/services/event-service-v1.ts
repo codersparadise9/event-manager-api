@@ -55,7 +55,7 @@ export class EventServiceV1 implements EventService {
     if (eventID === null || eventID === undefined || !validate(eventID)) {
       throw new BadRequestException('id is not valid');
     }
-    const event = await this._repository.findBy({
+    let event: Event | Event[] = await this._repository.findBy({
       owner: {
         id: userID,
       },
@@ -64,9 +64,8 @@ export class EventServiceV1 implements EventService {
     if (!event) {
       throw new BadRequestException('event not found ');
     } else {
-      const updatedEvent = { ...event, ...updateEventDTO };
-      console.log('updatedEvent', updatedEvent);
-      return await this._repository.update(updatedEvent);
+      event = EventDtoEntityMapper.mapUpdateDTO(event, updateEventDTO);
+      return await this._repository.update(event);
     }
   }
 
