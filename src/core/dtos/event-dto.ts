@@ -4,7 +4,7 @@
  @Author anup.tiwari787@gmail.com
  */
 
-export interface CreateEventDTO {
+export interface CreateEventDTOCore {
   name: string;
   location: string;
   start: Date;

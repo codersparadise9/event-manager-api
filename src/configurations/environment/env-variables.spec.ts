@@ -65,13 +65,13 @@ describe('EnvConfigService', () => {
       expect(envConfigService.AuthConfig).toBeDefined();
     });
     it('should return JWT key', () => {
-      expect(envConfigService.AuthConfig.jwtKey).toBeDefined();
-      expect(envConfigService.AuthConfig.jwtKey).toBe(process.env.JWT_KEY);
+      expect(envConfigService.AuthConfig.jwtAccessSecret).toBeDefined();
+      expect(envConfigService.AuthConfig.jwtAccessSecret).toBe(process.env.JWT_KEY);
     });
 
     it('should return JWT secret', () => {
-      expect(envConfigService.AuthConfig.jwtSecret).toBeDefined();
-      expect(envConfigService.AuthConfig.jwtSecret).toBe(process.env.JWT_SECRET);
+      expect(envConfigService.AuthConfig.jwtRefreshSecret).toBeDefined();
+      expect(envConfigService.AuthConfig.jwtRefreshSecret).toBe(process.env.JWT_SECRET);
     });
 
     it('should return Google Client ID', () => {
