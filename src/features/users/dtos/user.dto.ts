@@ -7,13 +7,10 @@
 import { CreateUserDtoCore, CreateUserResponseDTOCore } from '../../../core/dtos/user-dto';
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { Auth_Types } from '../../../constants/auth';
-import { EmailNotRegistered } from './validators/email-registered.validator';
-import { EmailRegistered } from './validators/email-already-registered.validator';
 
 export class CreateUserDTO implements CreateUserDtoCore {
   @IsEmail()
   @IsNotEmpty()
-  @EmailRegistered({ message: 'email already registered' })
   email: string;
 
   @IsString()
@@ -23,7 +20,6 @@ export class CreateUserDTO implements CreateUserDtoCore {
 
   @IsString()
   @IsNotEmpty()
-  @MinLength(6)
   password: string;
 }
 
@@ -37,7 +33,6 @@ export class CreateUserResponseDTO implements CreateUserResponseDTOCore {
 export class LoginUserDTO {
   @IsEmail()
   @IsNotEmpty()
-  @EmailNotRegistered({ message: 'user not registered' })
   email: string;
 
   @IsString()

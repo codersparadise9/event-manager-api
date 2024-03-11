@@ -27,6 +27,9 @@ export class TypeormUserEntity extends TypeormBaseEntity implements User {
   @Column({ type: 'varchar', length: 255 })
   password: string;
 
+  @Column({ type: 'boolean', default: 'false' })
+  verified: boolean;
+
   @OneToMany(() => TypeormSubscriptionEntity, (subscription) => subscription.user)
   subscription: Subscription[];
 }

@@ -8,9 +8,18 @@ import { Module } from '@nestjs/common';
 import { ConfigurationModule } from './configurations/configuration.module';
 import { CommonModule } from './common/common-module';
 import { FeatureModule } from './features/feature.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
-  imports: [ConfigurationModule, CommonModule, FeatureModule],
+  imports: [
+    CacheModule.register({
+      ttl: 3600, // seconds
+      isGlobal: true,
+    }),
+    ConfigurationModule,
+    CommonModule,
+    FeatureModule,
+  ],
   controllers: [],
   providers: [],
 })

@@ -8,6 +8,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DatabaseConfig } from './interfaces/database-config.interface';
 import { AuthConfig } from './interfaces/auth-config.interface';
+import { MailConfig } from './interfaces/mail-config.interface';
 
 @Injectable()
 export class EnvConfigService {
@@ -34,6 +35,13 @@ export class EnvConfigService {
       jwtAccessSecret: this._configService.get('JWT_ACCESS_SECRET'),
       jwtRefreshSecret: this._configService.get('JWT_REFRESH_SECRET'),
       jwtEmailVerifySecret: this._configService.get('JWT_EMAIL_VERIFICATION_SECRET'),
+    };
+  }
+
+  get MailConfig(): MailConfig {
+    return <MailConfig>{
+      auth: { pass: this._configService.get('MAILER_PASSWORD'), user: this._configService.get('MAILER_USERNAME') },
+      host: this._configService.get('MAILER_HOST'),
     };
   }
 }

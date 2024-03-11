@@ -13,5 +13,6 @@ export interface User extends BaseEntity {
   password: string;
   fullName: string;
   authType: Auth_Types;
+  verified: boolean;
   subscription: Subscription[];
 }

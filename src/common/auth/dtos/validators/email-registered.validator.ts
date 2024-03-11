@@ -10,8 +10,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { UserService } from '../../../../core/services/user.service';
 import { IsEmailRegistered } from './email-already-registered.validator';
+import { UserService } from '../../../../core/services/user.service';
 
 @ValidatorConstraint({ async: true })
 export class IsEmailNotRegistered implements ValidatorConstraintInterface {
@@ -19,6 +19,7 @@ export class IsEmailNotRegistered implements ValidatorConstraintInterface {
 
   async validate(email: any) {
     const user = await this._userService.findByEmail(email);
+    console.log(user);
     return user !== undefined;
   }
 }

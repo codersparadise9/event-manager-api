@@ -4,15 +4,13 @@
  @Author anup.tiwari787@gmail.com
  */
 
-import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthServiceCore } from '../../../core/services/common/auth-service.core';
 import { AuthResponseDTO, JWTUser, LocalAuthLoginDTO, LocalAuthSignupDTO } from '../../../core/dtos/auth-dto';
 import { JwtServiceCore } from '../../../core/services/common/jwt-service.core';
 import { EnvConfigService } from '../../../configurations/environment/env-config.service';
 import { UserService } from '../../../core/services/user.service';
 import * as bcrypt from 'bcrypt';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 import { Auth_Types } from '../../../constants/auth';
 import { isArray } from 'class-validator';
 
@@ -22,11 +20,10 @@ export class AuthServiceV1 implements AuthServiceCore {
     private readonly jwtService: JwtServiceCore,
     private readonly configService: EnvConfigService,
     private readonly userService: UserService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
-  async refreshToken(refreshToken: string): Promise<AuthResponseDTO> {
-    return await this.jwtService.refreshAccessToken(refreshToken);
+  async refreshToken(jwtUser: JWTUser): Promise<AuthResponseDTO> {
+    return await this.jwtService.refreshAccessToken(jwtUser);
   }
 
   async login(loginDTO?: LocalAuthLoginDTO): Promise<AuthResponseDTO> {
@@ -42,7 +39,6 @@ export class AuthServiceV1 implements AuthServiceCore {
     if (accessToken) {
       const user = await this.jwtService.validateToken(accessToken, this.configService.AuthConfig.jwtAccessSecret);
       if (user) {
-        await this.cacheManager.del(user.id);
         return true;
       } else {
         throw new UnauthorizedException('user not signed in');
@@ -71,7 +67,6 @@ export class AuthServiceV1 implements AuthServiceCore {
       this.configService.AuthConfig.jwtRefreshSecret,
       '1d',
     );
-    await this.cacheManager.set(user.id, refreshToken, 3600);
     return { accessToken, refreshToken };
   }
 }

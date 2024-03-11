@@ -5,18 +5,16 @@
  */
 
 import { Module } from '@nestjs/common';
-import { UserControllerV1 } from './controllers/user-controller-v1';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeormUserEntity } from './entities/typeorm-user.entity';
 import { UserService } from '../../core/services/user.service';
 import { UserServiceV1 } from './services/user-service-v1';
 import { UserRepository } from '../../core/repositories/user-repository';
-import { IsEmailRegistered } from './dtos/validators/email-already-registered.validator';
+
 import { TypeormUserRepository } from './repositories/typeorm-user.repository';
-import { IsEmailNotRegistered } from './dtos/validators/email-registered.validator';
 
 @Module({
-  controllers: [UserControllerV1],
+  controllers: [],
   imports: [TypeOrmModule.forFeature([TypeormUserEntity])],
   providers: [
     {
@@ -27,8 +25,6 @@ import { IsEmailNotRegistered } from './dtos/validators/email-registered.validat
       provide: UserRepository,
       useClass: TypeormUserRepository,
     },
-    IsEmailRegistered,
-    IsEmailNotRegistered,
   ],
   exports: [UserService, UserRepository],
 })

@@ -12,7 +12,7 @@ import { EnvConfigService } from '../../../configurations/environment/env-config
 import { JWTUser } from '../../../core/dtos/auth-dto';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-auth-strategy') {
+export class AccessKeyStrategy extends PassportStrategy(Strategy, 'access-token-strategy') {
   constructor(
     private usersService: UserService,
     configService: EnvConfigService,

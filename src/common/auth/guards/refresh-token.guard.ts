@@ -8,4 +8,4 @@ import { Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class LocalAuthGuard extends AuthGuard('local-auth-strategy') {}
+export class RefreshTokenGuard extends AuthGuard('refresh-token-strategy') {}

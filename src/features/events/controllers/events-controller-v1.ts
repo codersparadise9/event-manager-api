@@ -12,6 +12,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -19,7 +20,7 @@ import { EventService } from '../../../core/services/event.service';
 import { Event } from '../../../core/entities/event-entity';
 import { GetUser } from '../../../common/auth/decorators/auth-decorator';
 import { JWTUser } from '../../../core/dtos/auth-dto';
-import { JWTAuthGuard } from '../../../common/auth/guards/jwt-auth.guard';
+import { AccessTokenGuard } from '../../../common/auth/guards/access-token.guard';
 import { CreateEventDTO } from '../dtos/event-dtos';
 import { UserService } from '../../../core/services/user.service';
 
@@ -32,26 +33,35 @@ export class EventsControllerV1 {
   ) {}
 
   @Get()
-  @UseGuards(JWTAuthGuard)
-  async getAllCreatedEvents(@GetUser() user: JWTUser): Promise<Event[] | null> {
-    return this._service.getAllCreatedEvents(user.id);
+  @UseGuards(AccessTokenGuard)
+  async getAllCreatedEvents(@Query('active') isActive: boolean, @GetUser() user: JWTUser): Promise<Event[] | Event> {
+    if (isActive !== undefined) {
+      return this._service.getEventByFilter(
+        {
+          active: isActive,
+        },
+        user,
+      );
+    } else {
+      return this._service.getAllCreatedEvents(user.id);
+    }
   }
 
   @Get(':id')
-  @UseGuards(JWTAuthGuard)
+  @UseGuards(AccessTokenGuard)
   async getEventById(@GetUser() user: JWTUser, @Param('id') eventId: string): Promise<Event | Event[]> {
     return await this._service.getEventByFilter({ id: eventId }, user);
   }
 
   @Post()
-  @UseGuards(JWTAuthGuard)
+  @UseGuards(AccessTokenGuard)
   async createEvent(@GetUser() jwtUser: JWTUser, @Body() createEventDTO: CreateEventDTO): Promise<Event | Event[]> {
     const user = await this._userService.findByEmail(jwtUser.email);
     return await this._service.createEvent(user, createEventDTO);
   }
 
   @Patch(':id')
-  @UseGuards(JWTAuthGuard)
+  @UseGuards(AccessTokenGuard)
   async updateEvent(
     @GetUser() jwtUser: JWTUser,
     @Param('id') eventId: string,

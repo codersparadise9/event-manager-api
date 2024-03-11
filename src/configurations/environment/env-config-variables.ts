@@ -4,7 +4,7 @@
  @Author anup.tiwari787@gmail.com
  */
 
-import { IsBoolean, IsNotEmpty, IsNumber, IsString, validateSync } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, validateSync } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
 export class EnvConfigVariables {
@@ -55,6 +55,29 @@ export class EnvConfigVariables {
   @IsString()
   @IsNotEmpty()
   GOOGLE_CALLBACK_URI: string;
+
+  @IsString()
+  @IsNotEmpty()
+  MAILER_PASSWORD: string;
+
+  @IsString()
+  @IsNotEmpty()
+  MAILER_USERNAME: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  MAILER_HOST: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  MAILER_PORT: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  MAILER_SERVICE: string;
 }
 
 export const configValidator = (config: Record<string, unknown>) => {

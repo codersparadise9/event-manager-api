@@ -4,11 +4,9 @@
  @Author anup.tiwari787@gmail.com
  */
 
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtServiceCore } from '../../core/services/common/jwt-service.core';
 import { AuthResponseDTO, JWTUser } from '../../core/dtos/auth-dto';
-import { Cache } from 'cache-manager';
 import { EnvConfigService } from '../../configurations/environment/env-config.service';
 import { JwtService } from '@nestjs/jwt';
 
@@ -16,7 +14,6 @@ import { JwtService } from '@nestjs/jwt';
 export class JwtServiceImpl implements JwtServiceCore {
   constructor(
     private jwtService: JwtService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly configService: EnvConfigService,
   ) {}
 
@@ -25,29 +22,20 @@ export class JwtServiceImpl implements JwtServiceCore {
     return this.jwtService.sign(data, { secret: key, expiresIn: exp });
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<AuthResponseDTO> {
-    const user = await this.validateToken(refreshToken, this.configService.AuthConfig.jwtRefreshSecret);
+  async refreshAccessToken(user: JWTUser): Promise<AuthResponseDTO> {
     try {
-      const cachedToken = await this.cacheManager.get(user.id);
-      if (refreshToken === cachedToken) {
-        if (cachedToken) {
-          return {
-            accessToken: await this.signToken(user, this.configService.AuthConfig.jwtAccessSecret, '1h'),
-            refreshToken: await this.signToken(user, this.configService.AuthConfig.jwtRefreshSecret, '1D'),
-          };
-        }
-      } else {
-        throw new UnauthorizedException('please login again');
-      }
+      return {
+        accessToken: await this.signToken(user, this.configService.AuthConfig.jwtAccessSecret, '1h'),
+        refreshToken: await this.signToken(user, this.configService.AuthConfig.jwtRefreshSecret, '1D'),
+      };
     } catch (error) {
-      console.log('error = ', error);
+      throw new UnauthorizedException('please login again');
     }
   }
 
   async validateToken(token: string, key: string): Promise<JWTUser> {
     try {
-      const payload: JWTUser = this.jwtService.verify<JWTUser>(token, { secret: key });
-      return payload;
+      return this.jwtService.verify<JWTUser>(token, { secret: key });
     } catch (e) {
       throw new UnauthorizedException('Token verification failed');
     }

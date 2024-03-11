@@ -7,22 +7,12 @@
 import { Global, Module } from '@nestjs/common';
 import { TransactionManagerModule } from './transactions/transaction-manager.module';
 import { PaginationModule } from './pagination/pagination.module';
-import { CacheModule } from '@nestjs/cache-manager';
 import { JwtServiceModule } from './jwt/jwt.module';
 import { AuthModule } from './auth/auth.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Global()
 @Module({
-  imports: [
-    CacheModule.register({
-      ttl: 3600, // seconds
-      store: 'memory',
-      isGlobal: true,
-    }),
-    JwtServiceModule,
-    TransactionManagerModule,
-    PaginationModule,
-    AuthModule,
-  ],
+  imports: [JwtServiceModule, TransactionManagerModule, PaginationModule, AuthModule, MailerModule],
 })
 export class CommonModule {}
